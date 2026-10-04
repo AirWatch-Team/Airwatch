@@ -4,12 +4,12 @@
  * 
  * Uses PDO with prepared statements, error exception mode, and proper UTF-8 charset.
  */
-
 define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
 define('DB_PORT', getenv('DB_PORT') ?: '3306');
 define('DB_NAME', getenv('DB_NAME') ?: 'airwatch');
 define('DB_USER', getenv('DB_USER') ?: 'root');
-define('DB_PASS', getenv('DB_PASS') !== false ? getenv('DB_PASS') : '');
+define('DB_PASS', getenv('DB_PASS') ?: '');
+define('DB_SSL_CA', getenv('DB_SSL_CA') ?: '');
 
 class Database {
     private static ?PDO $instance = null;
@@ -19,13 +19,23 @@ class Database {
      */
     public static function getConnection(): PDO {
         if (self::$instance === null) {
-            $dsn = sprintf("mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4", DB_HOST, DB_PORT, DB_NAME);
+            $dsn = sprintf(
+    "mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4",
+    DB_HOST,
+    DB_PORT,
+    DB_NAME
+);
             
             $options = [
-                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES   => false,
-            ];
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
+];
+
+if (DB_SSL_CA !== '') {
+    $options[PDO::MYSQL_ATTR_SSL_CA] = DB_SSL_CA;
+    $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = true;
+}
 
             try {
                 self::$instance = new PDO($dsn, DB_USER, DB_PASS, $options);
