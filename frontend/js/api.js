@@ -5,15 +5,9 @@
 
 const API = (function() {
   // Determine relative base URL dynamically so it works in XAMPP (e.g. /AirWatch/backend/api or /backend/api)
-  const getApiBaseUrl = () => {
-    const path = window.location.pathname;
-    if (path.includes('/AirWatch/') || path.includes('/airwatch/')) {
-      const match = path.match(/\/[Aa]ir[Ww]atch/);
-      return `${match[0]}/backend/api`;
-    }
-    return '../backend/api';
-  };
-
+ const getApiBaseUrl = () => {
+  return '/api';
+};
   const BASE_URL = getApiBaseUrl();
 
   /**
