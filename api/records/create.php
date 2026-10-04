@@ -4,10 +4,10 @@
  * Method: POST
  */
 
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../helpers/response.php';
-require_once __DIR__ . '/../../helpers/validation.php';
-require_once __DIR__ . '/../../helpers/aqi.php';
+require_once __DIR__ . '/../../backend/config/database.php';
+require_once __DIR__ . '/../../backend/helpers/response.php';
+require_once __DIR__ . '/../../backend/helpers/validation.php';
+require_once __DIR__ . '/../../backend/helpers/aqi.php';
 
 setCorsAndJsonHeaders();
 

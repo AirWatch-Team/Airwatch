@@ -5,8 +5,8 @@
  * Calculates distribution percentages dynamically from database
  */
 
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../helpers/response.php';
+require_once __DIR__ . '/../../backend/config/database.php';
+require_once __DIR__ . '/../../backend/helpers/response.php';
 
 setCorsAndJsonHeaders();
 

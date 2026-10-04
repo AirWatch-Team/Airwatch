@@ -5,8 +5,8 @@
  * Generates downloadable CSV stream directly from MySQL
  */
 
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../helpers/response.php';
+require_once __DIR__ . '/../../backend/config/database.php';
+require_once __DIR__ . '/../../backend/helpers/response.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     sendError('Method not allowed. Use GET request.', 405);
