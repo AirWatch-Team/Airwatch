@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About System - AirWatch</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <span class="globe-icon">🌍</span>
+        <div>
+          AIRWATCH
+          <span class="brand-tagline">Air Quality Monitoring & Analysis</span>
+        </div>
+      </a>
+      <button class="mobile-toggle" aria-label="Toggle Navigation">☰</button>
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="collect.html" class="nav-link">Collect Data</a></li>
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="analysis.html" class="nav-link">Analysis</a></li>
+        <li><a href="locations.html" class="nav-link">Locations</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content Container -->
+  <main class="main-content">
+
+    <div style="margin-bottom:2rem;">
+      <h1 style="font-size:2rem;font-weight:800;color:#0f172a;margin-bottom:0.25rem;">ℹ️ About AirWatch System</h1>
+      <p style="color:#64748b;">Full System Specifications, Technical Architecture, Security Practices, and AQI Standard Documentation.</p>
+    </div>
+
+    <!-- System Overview & Title -->
+    <div class="card" style="margin-bottom:2rem;border-left:5px solid #059669;">
+      <h2 style="color:#059669;margin-bottom:0.5rem;font-size:1.5rem;">AIRWATCH</h2>
+      <h3 style="color:#0f172a;font-weight:600;margin-bottom:1rem;">Web-Based Air Quality Data Collection, Monitoring and Analysis System</h3>
+      <p style="color:#475569;line-height:1.7;">
+        AirWatch is a complete, production-grade full-stack environmental monitoring platform built to capture, analyze, and visualize daily atmospheric pollution indicators across multiple monitoring stations. The system provides real-time aggregate statistics, location comparison analytics, printable environmental summary reports, and full CRUD data management.
+      </p>
+    </div>
+
+    <!-- Core Architecture Section -->
+    <div class="card" style="margin-bottom:2rem;">
+      <h2 class="card-title">🏗️ Core System Architecture</h2>
+      <p style="color:#64748b;margin-bottom:1rem;">
+        AirWatch enforces strict separation of concerns. The browser frontend never communicates directly with the database; all data operations are brokered through RESTful PHP backend endpoints.
+      </p>
+
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;padding:1.5rem;border-radius:10px;font-family:monospace;font-size:0.9rem;line-height:1.6;color:#0f172a;overflow-x:auto;">
+<pre>
+                      AIRWATCH APPLICATION
+                               │
+            ┌──────────────────┴──────────────────┐
+            ↓                                     ↓
+     FRONTEND LAYER                         DATABASE LAYER
+    (HTML5 / CSS3 / Vanilla JS)             (MySQL 8.0+ / MariaDB)
+            │                                     ↑
+            │ JavaScript fetch() API               │ PDO Prepared
+            ↓                                     │ Statements
+     PHP REST API LAYER ──────────────────────────┘
+   (create.php, read.php, statistics.php, etc.)
+</pre>
+      </div>
+    </div>
+
+    <!-- Technology Stack Grid -->
+    <div class="charts-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));margin-bottom:2rem;">
+      
+      <div class="card">
+        <h3 class="card-title" style="color:#059669;">💻 Frontend Stack</h3>
+        <ul style="color:#475569;line-height:1.8;padding-left:1.2rem;">
+          <li><strong>HTML5:</strong> Semantic layout structure and responsive forms.</li>
+          <li><strong>CSS3:</strong> Light Environmental theme custom styling and flexbox/grid.</li>
+          <li><strong>Vanilla JavaScript (ES6+):</strong> Asynchronous API calls, dynamic DOM manipulation.</li>
+          <li><strong>Chart.js:</strong> Interactive canvas data visualizations.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title" style="color:#0284c7;">⚙️ Backend Stack</h3>
+        <ul style="color:#475569;line-height:1.8;padding-left:1.2rem;">
+          <li><strong>PHP 8+:</strong> Object-oriented RESTful API endpoints.</li>
+          <li><strong>PDO (PHP Data Objects):</strong> Database abstraction layer.</li>
+          <li><strong>Prepared Statements:</strong> Parametric query execution preventing SQL injection.</li>
+          <li><strong>JSON Engine:</strong> Standardized JSON API responses with HTTP status codes.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title" style="color:#d97706;">🗄️ Database & Environment</h3>
+        <ul style="color:#475569;line-height:1.8;padding-left:1.2rem;">
+          <li><strong>MySQL / MariaDB:</strong> Relational storage engine (`airwatch`).</li>
+          <li><strong>Indexing:</strong> Optimized indexes on `location`, `record_date`, `aqi`, `pollution_source`.</li>
+          <li><strong>Environment Support:</strong> Compatible with XAMPP, WAMP, and Linux Apache stacks.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Documented AQI Standard Section -->
+    <div class="card" style="margin-bottom:2rem;">
+      <h2 class="card-title">📏 Documented Air Quality Index (AQI) Standard</h2>
+      <p style="color:#64748b;margin-bottom:1rem;">
+        AirWatch strictly adheres to the <strong>US EPA Air Quality Index (AQI) Standard</strong> for calculating health categories and rendering badge indicators across all pages, APIs, and printable reports.
+      </p>
+
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>AQI Range</th>
+              <th>Status Category</th>
+              <th>Color Code</th>
+              <th>Health Advisory & Meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>0 – 50</strong></td>
+              <td><span class="aqi-badge status-good">● Good</span></td>
+              <td><code>#10b981</code> (Green)</td>
+              <td>Air quality is satisfactory, and air pollution poses little or no risk.</td>
+            </tr>
+            <tr>
+              <td><strong>51 – 100</strong></td>
+              <td><span class="aqi-badge status-moderate">● Moderate</span></td>
+              <td><code>#d97706</code> (Yellow)</td>
+              <td>Air quality is acceptable; sensitive individuals may experience minor irritation.</td>
+            </tr>
+            <tr>
+              <td><strong>101 – 150</strong></td>
+              <td><span class="aqi-badge status-sensitive">● Unhealthy for Sensitive Groups</span></td>
+              <td><code>#ea580c</code> (Orange)</td>
+              <td>Members of sensitive groups may experience health effects; general public less affected.</td>
+            </tr>
+            <tr>
+              <td><strong>151 – 200</strong></td>
+              <td><span class="aqi-badge status-unhealthy">● Unhealthy</span></td>
+              <td><code>#dc2626</code> (Red)</td>
+              <td>Some members of the general public may experience health effects.</td>
+            </tr>
+            <tr>
+              <td><strong>201 – 300</strong></td>
+              <td><span class="aqi-badge status-very-unhealthy">● Very Unhealthy</span></td>
+              <td><code>#7c3aed</code> (Purple)</td>
+              <td>Health alert: The risk of health effects is increased for everyone.</td>
+            </tr>
+            <tr>
+              <td><strong>301+</strong></td>
+              <td><span class="aqi-badge status-hazardous">● Hazardous</span></td>
+              <td><code>#881337</code> (Maroon)</td>
+              <td>Health warning of emergency conditions: everyone is more likely to be affected.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Security & Authentication Readiness -->
+    <div class="charts-grid" style="grid-template-columns: 1fr 1fr; margin-bottom:2rem;">
+      <div class="card">
+        <h2 class="card-title">🔒 Real-World Security Practices</h2>
+        <ul style="color:#475569;line-height:1.8;padding-left:1.2rem;">
+          <li><strong>PDO Prepared Statements:</strong> All user input is bound parametrically to eliminate SQL injection vulnerabilities.</li>
+          <li><strong>Server-Side Validation:</strong> PHP re-verifies mandatory fields, numerical bounds, date formats, and humidity ranges (0-100%).</li>
+          <li><strong>XSS Prevention:</strong> Special characters are sanitized via <code>htmlspecialchars()</code> before output.</li>
+          <li><strong>Clean Error Handling:</strong> Internal stack traces and database credentials are never exposed in JSON responses.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">🔑 Authentication-Ready Architecture</h2>
+        <p style="color:#64748b;line-height:1.7;">
+          The system architecture is structured to support future Role-Based Access Control (RBAC). Planned expansion tables include:
+        </p>
+        <div style="background:#f8fafc;padding:0.75rem;border-radius:6px;font-family:monospace;font-size:0.85rem;color:#0f172a;margin-top:0.5rem;">
+          users (id, username, password_hash, role_id)<br>
+          roles (id, role_name: 'Admin', 'Collector', 'Viewer')
+        </div>
+      </div>
+    </div>
+
+    <!-- Future Improvements Section -->
+    <div class="card">
+      <h2 class="card-title">🚀 Future Development Roadmap</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:1rem;margin-top:0.75rem;">
+        <div style="background:#f8fafc;padding:1rem;border-radius:8px;border:1px solid #e2e8f0;">
+          <strong style="color:#059669;">📡 Hardware IoT Sensors</strong>
+          <p style="font-size:0.85rem;color:#64748b;margin-top:0.25rem;">ESP32, Arduino, MQ-135, and PMS5003 laser particulate sensors pushing automated telemetry.</p>
+        </div>
+        <div style="background:#f8fafc;padding:1rem;border-radius:8px;border:1px solid #e2e8f0;">
+          <strong style="color:#0284c7;">🗺️ Interactive GIS Maps</strong>
+          <p style="font-size:0.85rem;color:#64748b;margin-top:0.25rem;">Leaflet.js and OpenStreetMap heatmap layers displaying spatial pollution plumes.</p>
+        </div>
+        <div style="background:#f8fafc;padding:1rem;border-radius:8px;border:1px solid #e2e8f0;">
+          <strong style="color:#d97706;">🔔 Automated Alerts</strong>
+          <p style="font-size:0.85rem;color:#64748b;margin-top:0.25rem;">Twilio SMS and SMTP email notifications triggered when AQI exceeds hazardous thresholds.</p>
+        </div>
+        <div style="background:#f8fafc;padding:1rem;border-radius:8px;border:1px solid #e2e8f0;">
+          <strong style="color:#8b5cf6;">☁️ Cloud Deployment</strong>
+          <p style="font-size:0.85rem;color:#64748b;margin-top:0.25rem;">Containerized Docker deployment on AWS/GCP with MySQL replication.</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-text">
+        © 2026 <strong>AirWatch Platform</strong> — Web-Based Air Quality Data Collection, Monitoring and Analysis System
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

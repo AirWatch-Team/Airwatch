@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Environmental Analysis - AirWatch</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body id="analysis-page">
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <span class="globe-icon">🌍</span>
+        <div>
+          AIRWATCH
+          <span class="brand-tagline">Air Quality Monitoring & Analysis</span>
+        </div>
+      </a>
+      <button class="mobile-toggle" aria-label="Toggle Navigation">☰</button>
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="collect.html" class="nav-link">Collect Data</a></li>
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="analysis.html" class="nav-link">Analysis</a></li>
+        <li><a href="locations.html" class="nav-link">Locations</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content Container -->
+  <main class="main-content">
+
+    <div style="margin-bottom:1.5rem;">
+      <h1 style="font-size:2rem;font-weight:800;color:#0f172a;margin-bottom:0.25rem;">📈 Environmental Analysis & Insights</h1>
+      <p style="color:#64748b;">In-depth spatial hotspots, emission source distribution, and side-by-side location comparisons.</p>
+    </div>
+
+    <!-- Alert Container -->
+    <div id="alert-container"></div>
+
+    <!-- Hotspot Cards Row -->
+    <div class="charts-grid" style="grid-template-columns: 1fr 1fr; margin-bottom:2rem;">
+      <div id="highest-pollution-card" class="card" style="border-left:5px solid #dc2626;">
+        Loading highest pollution hotspot...
+      </div>
+      <div id="lowest-pollution-card" class="card" style="border-left:5px solid #047857;">
+        Loading cleanest location...
+      </div>
+    </div>
+
+    <!-- Automated Environmental Insights Section -->
+    <div class="card" style="margin-bottom:2rem;background:linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);">
+      <h2 class="card-title">🤖 Data-Driven Environmental Insights</h2>
+      <p style="font-size:0.85rem;color:#64748b;margin-bottom:1rem;">
+        Autonomously generated conclusions based strictly on calculated SQL database statistics.
+      </p>
+      <div id="automated-insights-list">Loading automated insights...</div>
+    </div>
+
+    <!-- Location Comparison Widget -->
+    <div class="card" style="margin-bottom:2rem;">
+      <h2 class="card-title">⚖️ Side-by-Side Location Comparison</h2>
+      <p style="font-size:0.85rem;color:#64748b;margin-bottom:1.25rem;">
+        Select two monitored locations to compare air quality parameters, particulate levels, and peak pollution metrics.
+      </p>
+
+      <div style="display:grid;grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));gap:1rem;margin-bottom:1.5rem;align-items:end;">
+        <div class="form-group">
+          <label for="compare-loc-1" class="form-label">First Location</label>
+          <select id="compare-loc-1" class="form-control"></select>
+        </div>
+        <div class="form-group">
+          <label for="compare-loc-2" class="form-label">Second Location</label>
+          <select id="compare-loc-2" class="form-control"></select>
+        </div>
+        <div>
+          <button id="compare-locations-btn" class="btn btn-primary" style="width:100%;">🔄 Compare Metrics</button>
+        </div>
+      </div>
+
+      <div class="charts-grid" style="grid-template-columns: 1fr 1fr; gap:1.5rem;">
+        <div class="table-responsive">
+          <table class="table" style="width:100%;">
+            <tbody id="comparison-table-body">
+              <tr><td colspan="3" style="text-align:center;">Select locations above to compare.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="chart-container" style="height:300px;">
+          <canvas id="comparison-chart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pollution Source Distribution Table & Chart -->
+    <div class="charts-grid" style="grid-template-columns: 1fr 1fr;">
+      
+      <div class="card">
+        <h2 class="card-title">🏭 Pollution Source Percentages</h2>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Source Category</th>
+                <th>Records</th>
+                <th>Percentage</th>
+                <th>Avg AQI</th>
+              </tr>
+            </thead>
+            <tbody id="pollution-sources-tbody">
+              <tr><td colspan="4" style="text-align:center;">Loading source metrics...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">📊 Source Contribution (%)</h2>
+        <div class="chart-container" style="height:260px;">
+          <canvas id="analysis-sources-chart"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-text">
+        © 2026 <strong>AirWatch Platform</strong> — Web-Based Air Quality Data Collection, Monitoring and Analysis System
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/analysis.js"></script>
+</body>
+</html>

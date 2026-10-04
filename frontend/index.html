@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AirWatch - Environmental Air Quality Monitoring System</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <span class="globe-icon">🌍</span>
+        <div>
+          AIRWATCH
+          <span class="brand-tagline">Air Quality Monitoring & Analysis</span>
+        </div>
+      </a>
+      <button class="mobile-toggle" aria-label="Toggle Navigation">☰</button>
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="collect.html" class="nav-link">Collect Data</a></li>
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="analysis.html" class="nav-link">Analysis</a></li>
+        <li><a href="locations.html" class="nav-link">Locations</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content Container -->
+  <main class="main-content">
+    
+    <!-- Hero Banner -->
+    <section class="hero-banner">
+      <h1 class="hero-title">Monitor the <span>Air You Breathe</span></h1>
+      <p class="hero-subtitle">
+        A modern full-stack environmental data platform to collect, monitor, visualize, and analyze air quality index (AQI) measurements across diverse geographic locations.
+      </p>
+      <div class="hero-actions">
+        <a href="collect.html" class="btn btn-primary">➕ Collect Data</a>
+        <a href="dashboard.html" class="btn btn-secondary">📊 View Dashboard</a>
+        <a href="analysis.html" class="btn btn-outline">📈 Environmental Analysis</a>
+      </div>
+    </section>
+
+    <!-- Quick Live Metrics Banner -->
+    <div class="grid-stats" id="home-live-stats">
+      <div class="stat-card">
+        <span class="stat-label">Total Measurements</span>
+        <span class="stat-value" id="home-total-records">--</span>
+        <span class="stat-subtext">Logged in database</span>
+      </div>
+      <div class="stat-card blue">
+        <span class="stat-label">System Avg AQI</span>
+        <span class="stat-value" id="home-avg-aqi">--</span>
+        <span class="stat-subtext">US EPA Standard</span>
+      </div>
+      <div class="stat-card orange">
+        <span class="stat-label">Peak AQI Recorded</span>
+        <span class="stat-value" id="home-highest-aqi">--</span>
+        <span class="stat-subtext">Maximum pollution peak</span>
+      </div>
+      <div class="stat-card teal">
+        <span class="stat-label">Monitored Zones</span>
+        <span class="stat-value" id="home-locations">--</span>
+        <span class="stat-subtext">Distinct locations</span>
+      </div>
+    </div>
+
+    <!-- Educational & Feature Cards Grid -->
+    <div class="charts-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+      
+      <!-- Card 1: What is Air Pollution? -->
+      <div class="card">
+        <h2 class="card-title">💨 What is Air Pollution?</h2>
+        <p style="color:#64748b;margin-bottom:1rem;">
+          Air pollution consists of hazardous chemicals, particulate matter (PM2.5 and PM10), gaseous pollutants, and biological molecules that degrade the atmosphere and pose severe health hazards to human populations.
+        </p>
+        <ul style="color:#0f172a;padding-left:1.2rem;line-height:1.7;">
+          <li><strong>PM2.5:</strong> Fine inhalable particles ≤ 2.5 micrometers.</li>
+          <li><strong>PM10:</strong> Inhalable particles ≤ 10 micrometers.</li>
+          <li><strong>AQI:</strong> Consolidated index representing daily air cleanliness.</li>
+        </ul>
+      </div>
+
+      <!-- Card 2: Why Monitoring Matters -->
+      <div class="card">
+        <h2 class="card-title">🌱 Why Monitoring Matters</h2>
+        <p style="color:#64748b;margin-bottom:1rem;">
+          Systematic data collection empowers municipal authorities, urban planners, public health organizations, and citizens to pinpoint pollution hotspots, track seasonal trends, and implement targeted environmental interventions.
+        </p>
+        <ul style="color:#0f172a;padding-left:1.2rem;line-height:1.7;">
+          <li>Early warning system for vulnerable populations.</li>
+          <li>Data-driven policy formulation and traffic management.</li>
+          <li>Evaluating the impact of urban green cover.</li>
+        </ul>
+      </div>
+
+      <!-- Card 3: How AirWatch Works -->
+      <div class="card">
+        <h2 class="card-title">⚙️ How AirWatch Works</h2>
+        <p style="color:#64748b;margin-bottom:1rem;">
+          AirWatch follows a robust, multi-layered full-stack architecture built with raw HTML5/CSS3/JS, PHP REST APIs, and a high-performance MySQL relational database.
+        </p>
+        <div style="background:#f1f5f9;padding:0.75rem;border-radius:8px;font-family:monospace;font-size:0.85rem;color:#059669;">
+          Client Browser ➔ JS Fetch ➔ PHP REST API ➔ PDO ➔ MySQL Database
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Features Overview Banner -->
+    <section class="card" style="margin-top:2rem;background:linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);">
+      <h2 class="card-title">🌿 AirWatch Core Features</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:1.5rem;margin-top:1rem;">
+        <div>
+          <h4 style="color:#059669;">📝 Data Collection</h4>
+          <p style="font-size:0.9rem;color:#64748b;">Full form validation with real-time AQI badge calculations and PDO prepared statements.</p>
+        </div>
+        <div>
+          <h4 style="color:#0284c7;">📊 Dynamic Dashboard</h4>
+          <p style="font-size:0.9rem;color:#64748b;">Real-time SQL statistics, interactive pagination, filter search, and Chart.js visualizations.</p>
+        </div>
+        <div>
+          <h4 style="color:#d97706;">📈 Hotspot Analysis</h4>
+          <p style="font-size:0.9rem;color:#64748b;">Automated environmental insights, location comparisons, and pollution source percentages.</p>
+        </div>
+        <div>
+          <h4 style="color:#8b5cf6;">📄 Printable Reports</h4>
+          <p style="font-size:0.9rem;color:#64748b;">Instant print-ready environmental summary reports and direct CSV data exports.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-text">
+        © 2026 <strong>AirWatch Platform</strong> — Web-Based Air Quality Data Collection, Monitoring and Analysis System
+      </div>
+      <ul class="footer-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="collect.html">Collect Data</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="analysis.html">Analysis</a></li>
+        <li><a href="about.html">About System</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/script.js"></script>
+  <script>
+    // Quick load home page live stats preview
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const res = await API.getDashboardStats();
+        const d = res.data;
+        document.getElementById('home-total-records').textContent = d.total_records || 0;
+        document.getElementById('home-avg-aqi').textContent = d.avg_aqi ? d.avg_aqi.toFixed(1) : 0;
+        document.getElementById('home-highest-aqi').textContent = d.highest_aqi || 0;
+        document.getElementById('home-locations').textContent = d.unique_locations || 0;
+      } catch (e) {
+        console.warn('Home stats preview failed:', e);
+      }
+    });
+  </script>
+</body>
+</html>

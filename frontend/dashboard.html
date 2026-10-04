@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Environmental Dashboard - AirWatch</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body id="dashboard-page">
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <span class="globe-icon">🌍</span>
+        <div>
+          AIRWATCH
+          <span class="brand-tagline">Air Quality Monitoring & Analysis</span>
+        </div>
+      </a>
+      <button class="mobile-toggle" aria-label="Toggle Navigation">☰</button>
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="collect.html" class="nav-link">Collect Data</a></li>
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="analysis.html" class="nav-link">Analysis</a></li>
+        <li><a href="locations.html" class="nav-link">Locations</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content Container -->
+  <main class="main-content">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;">
+      <div>
+        <h1 style="font-size:2rem;font-weight:800;color:#0f172a;margin-bottom:0.25rem;">📊 Environmental Monitoring Dashboard</h1>
+        <p style="color:#64748b;">Real-time SQL aggregation metrics, air quality trends, and data management.</p>
+      </div>
+      <div style="display:flex;gap:0.75rem;">
+        <button id="generate-report-btn" class="btn btn-primary btn-sm">📄 Generate Environmental Report</button>
+        <button id="export-csv-btn" class="btn btn-secondary btn-sm">📥 Export CSV</button>
+      </div>
+    </div>
+
+    <!-- Alert Box Container for Pollution Threshold Alerts -->
+    <div id="pollutant-alert-box" style="display:none;margin-bottom:1.5rem;"></div>
+
+    <!-- Top Headline Statistics Cards -->
+    <div class="grid-stats">
+      <div class="stat-card">
+        <span class="stat-label">Total Records</span>
+        <span class="stat-value" id="stat-total-records">0</span>
+        <span class="stat-subtext">Logged observations</span>
+      </div>
+      <div class="stat-card blue">
+        <span class="stat-label">System Avg AQI</span>
+        <span class="stat-value" id="stat-avg-aqi">0</span>
+        <span class="stat-subtext">Overall average</span>
+      </div>
+      <div class="stat-card orange">
+        <span class="stat-label">Peak AQI</span>
+        <span class="stat-value" id="stat-highest-aqi">0</span>
+        <span class="stat-subtext">Highest recorded</span>
+      </div>
+      <div class="stat-card teal">
+        <span class="stat-label">Locations Monitored</span>
+        <span class="stat-value" id="stat-unique-locations">0</span>
+        <span class="stat-subtext">Monitoring zones</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Avg PM2.5</span>
+        <span class="stat-value" id="stat-avg-pm25">0</span>
+        <span class="stat-subtext">µg/m³ concentration</span>
+      </div>
+      <div class="stat-card blue">
+        <span class="stat-label">Avg PM10</span>
+        <span class="stat-value" id="stat-avg-pm10">0</span>
+        <span class="stat-subtext">µg/m³ concentration</span>
+      </div>
+    </div>
+
+    <!-- Chart Visualizations Grid -->
+    <div class="charts-grid">
+      
+      <!-- Chart 1: AQI Trend Line Chart -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3 style="margin:0;font-size:1.1rem;">📈 AQI Trend vs Date</h3>
+          <span style="font-size:0.8rem;color:#64748b;">Historical air quality index progression</span>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-aqi-trend"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 2: AQI by Location Bar Chart -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3 style="margin:0;font-size:1.1rem;">📊 Average AQI by Location</h3>
+          <span style="font-size:0.8rem;color:#64748b;">Comparing mean pollution levels across zones</span>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-aqi-location"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 3: PM2.5 Trend Line Chart -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3 style="margin:0;font-size:1.1rem;">🌫️ PM2.5 Concentration Trend</h3>
+          <span style="font-size:0.8rem;color:#64748b;">Fine particulate matter over time</span>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-pm25-trend"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 4: Pollution Sources Doughnut Chart -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3 style="margin:0;font-size:1.1rem;">🏭 Pollution Sources Breakdown</h3>
+          <span style="font-size:0.8rem;color:#64748b;">Dominant emission sources distribution</span>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-pollution-sources"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Filter & Search Bar -->
+    <form id="filter-form" class="filter-bar">
+      <div class="form-group">
+        <label for="filter-location" class="form-label">Location</label>
+        <input type="text" id="filter-location" class="form-control" placeholder="Search location...">
+      </div>
+      <div class="form-group">
+        <label for="filter-start-date" class="form-label">Start Date</label>
+        <input type="date" id="filter-start-date" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="filter-end-date" class="form-label">End Date</label>
+        <input type="date" id="filter-end-date" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="filter-status" class="form-label">AQI Status</label>
+        <select id="filter-status" class="form-control">
+          <option value="">All Statuses</option>
+          <option value="Good">Good</option>
+          <option value="Moderate">Moderate</option>
+          <option value="Unhealthy for Sensitive Groups">Unhealthy (Sensitive)</option>
+          <option value="Unhealthy">Unhealthy</option>
+          <option value="Very Unhealthy">Very Unhealthy</option>
+          <option value="Hazardous">Hazardous</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="filter-search" class="form-label">Keyword Search</label>
+        <input type="text" id="filter-search" class="form-control" placeholder="Notes or sources...">
+      </div>
+      <div style="display:flex;gap:0.5rem;">
+        <button type="submit" class="btn btn-primary" style="flex:1;">🔍 Filter</button>
+        <button type="button" id="reset-filters-btn" class="btn btn-outline">🔄 Reset</button>
+      </div>
+    </form>
+
+    <!-- Data Records Table -->
+    <div class="card" style="padding:1rem;">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Date & Time</th>
+              <th>Location</th>
+              <th>AQI</th>
+              <th>Status</th>
+              <th>PM2.5</th>
+              <th>PM10</th>
+              <th>Pollution Source</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="records-table-body">
+            <tr><td colspan="8" style="text-align:center;padding:2rem;">Loading measurement records...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination Bar -->
+      <div class="pagination">
+        <div id="pagination-info" class="pagination-info">Showing page 1 of 1</div>
+        <div class="pagination-buttons">
+          <button id="prev-page-btn" class="btn btn-outline btn-sm">◀ Previous</button>
+          <button id="next-page-btn" class="btn btn-outline btn-sm">Next ▶</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL 1: VIEW RECORD DETAILS -->
+  <div id="view-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">👁️ Air Quality Measurement Details</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div id="view-modal-content">Loading...</div>
+      <div class="modal-footer">
+        <button class="btn btn-outline modal-cancel">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: EDIT RECORD -->
+  <div id="edit-modal" class="modal-overlay">
+    <div class="modal-card" style="max-width:700px;">
+      <div class="modal-header">
+        <h3 class="modal-title">✏️ Edit Air Quality Record</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div id="edit-modal-alerts"></div>
+      <form id="edit-record-form">
+        <input type="hidden" id="edit-id">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="edit-location" class="form-label">Location *</label>
+            <input type="text" id="edit-location" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-date" class="form-label">Date *</label>
+            <input type="date" id="edit-date" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-time" class="form-label">Time</label>
+            <input type="time" id="edit-time" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="edit-aqi" class="form-label">AQI *</label>
+            <input type="number" id="edit-aqi" class="form-control" min="0" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-pm25" class="form-label">PM2.5 (µg/m³) *</label>
+            <input type="number" id="edit-pm25" class="form-control" step="0.01" min="0" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-pm10" class="form-label">PM10 (µg/m³) *</label>
+            <input type="number" id="edit-pm10" class="form-control" step="0.01" min="0" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-temperature" class="form-label">Temperature (°C)</label>
+            <input type="number" id="edit-temperature" class="form-control" step="0.1">
+          </div>
+          <div class="form-group">
+            <label for="edit-humidity" class="form-label">Humidity (%)</label>
+            <input type="number" id="edit-humidity" class="form-control" step="0.1" min="0" max="100">
+          </div>
+          <div class="form-group">
+            <label for="edit-pollution-source" class="form-label">Pollution Source</label>
+            <select id="edit-pollution-source" class="form-control">
+              <option value="Vehicle Traffic">Vehicle Traffic</option>
+              <option value="Construction">Construction</option>
+              <option value="Waste Burning">Waste Burning</option>
+              <option value="Industrial Smoke">Industrial Smoke</option>
+              <option value="Dust">Dust</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group full-width">
+            <label for="edit-notes" class="form-label">Notes</label>
+            <textarea id="edit-notes" class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 3: DELETE CONFIRMATION -->
+  <div id="delete-modal" class="modal-overlay">
+    <div class="modal-card" style="max-width:450px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="color:#ef4444;">🗑️ Confirm Record Deletion</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <p style="margin-bottom:1rem;color:#64748b;">
+        Are you sure you want to permanently delete this measurement record from the MySQL database? This action cannot be undone.
+      </p>
+      <div id="delete-record-info" style="font-weight:700;color:#0f172a;background:#f8fafc;padding:0.75rem;border-radius:6px;margin-bottom:1.5rem;"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline modal-cancel">Cancel</button>
+        <button type="button" id="confirm-delete-btn" class="btn btn-danger">Yes, Delete Record</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: ENVIRONMENTAL REPORT PRINT MODAL -->
+  <div id="report-modal" class="modal-overlay">
+    <div class="modal-card" style="max-width:850px;">
+      <div class="modal-header no-print">
+        <h3 class="modal-title">📄 Environmental Report Preview</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div id="report-modal-content">Loading report...</div>
+      <div class="modal-footer no-print">
+        <button type="button" class="btn btn-outline modal-cancel">Close</button>
+        <button type="button" id="print-report-btn" class="btn btn-primary">🖨️ Print / Save PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-text">
+        © 2026 <strong>AirWatch Platform</strong> — Web-Based Air Quality Data Collection, Monitoring and Analysis System
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/report.js"></script>
+</body>
+</html>

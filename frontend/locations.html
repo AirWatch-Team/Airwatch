@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monitored Locations - AirWatch</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <span class="globe-icon">🌍</span>
+        <div>
+          AIRWATCH
+          <span class="brand-tagline">Air Quality Monitoring & Analysis</span>
+        </div>
+      </a>
+      <button class="mobile-toggle" aria-label="Toggle Navigation">☰</button>
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="collect.html" class="nav-link">Collect Data</a></li>
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="analysis.html" class="nav-link">Analysis</a></li>
+        <li><a href="locations.html" class="nav-link">Locations</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content Container -->
+  <main class="main-content">
+
+    <div style="margin-bottom:1.5rem;">
+      <h1 style="font-size:2rem;font-weight:800;color:#0f172a;margin-bottom:0.25rem;">📍 Monitored Environmental Zones</h1>
+      <p style="color:#64748b;">Overview of all geographic monitoring stations and field observation sites stored in database.</p>
+    </div>
+
+    <!-- Alert Container -->
+    <div id="alert-container"></div>
+
+    <!-- Locations Grid Container -->
+    <div id="locations-grid" class="charts-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));margin-bottom:2.5rem;">
+      <div class="card"><p style="color:#64748b;">Loading monitored locations...</p></div>
+    </div>
+
+    <!-- Future-Ready Geographic Map Section -->
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:1rem;">
+        <div>
+          <h2 class="card-title" style="margin:0;">🗺️ Spatial GIS & Geographic Mapping</h2>
+          <span style="font-size:0.85rem;color:#64748b;">Future-Ready Interactive Map Integration Architecture</span>
+        </div>
+        <span class="aqi-badge status-good">Leaflet / OpenStreetMap Ready</span>
+      </div>
+      
+      <div style="height:320px;background:#f1f5f9;border-radius:12px;border:2px dashed #cbd5e1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;">
+        <div style="font-size:3rem;margin-bottom:0.5rem;">📍</div>
+        <h3 style="color:#0f172a;margin-bottom:0.5rem;">Interactive Map Interface Placeholder</h3>
+        <p style="color:#64748b;max-width:550px;font-size:0.9rem;">
+          This module is designed for direct integration with <strong>Leaflet.js</strong> or <strong>Google Maps API</strong>. In production IoT deployments, GPS coordinates (`latitude`, `longitude`) can be dynamically bound to render interactive markers colored by AQI status.
+        </p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-text">
+        © 2026 <strong>AirWatch Platform</strong> — Web-Based Air Quality Data Collection, Monitoring and Analysis System
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const grid = document.getElementById('locations-grid');
+      try {
+        const response = await API.getLocationAnalysis();
+        const locations = response.data || [];
+
+        if (locations.length === 0) {
+          grid.innerHTML = '<div class="card"><p>No monitored locations found in database. Please add or seed measurement data.</p></div>';
+          return;
+        }
+
+        grid.innerHTML = locations.map(loc => `
+          <div class="card" style="border-top:4px solid ${loc.aqi_details.color};">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
+              <h3 style="margin:0;font-size:1.25rem;">📍 ${loc.location}</h3>
+              ${getAQIBadgeHtml(Math.round(loc.average_aqi), loc.aqi_details.status)}
+            </div>
+
+            <div style="font-size:2.2rem;font-weight:800;color:${loc.aqi_details.color};line-height:1.1;margin-bottom:0.5rem;">
+              ${loc.average_aqi} <span style="font-size:0.85rem;color:#64748b;font-weight:500;">Avg AQI</span>
+            </div>
+
+            <table class="table" style="width:100%;font-size:0.85rem;margin-bottom:1rem;">
+              <tr><th>Total Records Logged:</th><td><strong>${loc.record_count}</strong></td></tr>
+              <tr><th>Peak AQI Recorded:</th><td><strong style="color:#dc2626;">${loc.highest_aqi}</strong></td></tr>
+              <tr><th>Lowest AQI Recorded:</th><td><strong style="color:#047857;">${loc.lowest_aqi}</strong></td></tr>
+              <tr><th>Average PM2.5:</th><td>${loc.average_pm25} µg/m³</td></tr>
+              <tr><th>Average PM10:</th><td>${loc.average_pm10} µg/m³</td></tr>
+              <tr><th>Latest Date:</th><td>${loc.latest_record_date}</td></tr>
+            </table>
+
+            <a href="dashboard.html" class="btn btn-outline btn-sm" style="width:100%;">📊 View in Dashboard</a>
+          </div>
+        `).join('');
+
+      } catch (error) {
+        grid.innerHTML = `<div class="card"><p style="color:#dc2626;">Failed to load location statistics: ${error.message}</p></div>`;
+      }
+    });
+  </script>
+</body>
+</html>

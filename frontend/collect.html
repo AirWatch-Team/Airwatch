@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collect Air Quality Data - AirWatch</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <span class="globe-icon">🌍</span>
+        <div>
+          AIRWATCH
+          <span class="brand-tagline">Air Quality Monitoring & Analysis</span>
+        </div>
+      </a>
+      <button class="mobile-toggle" aria-label="Toggle Navigation">☰</button>
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="collect.html" class="nav-link">Collect Data</a></li>
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="analysis.html" class="nav-link">Analysis</a></li>
+        <li><a href="locations.html" class="nav-link">Locations</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content Container -->
+  <main class="main-content">
+    
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;">
+      <div>
+        <h1 style="font-size:2rem;font-weight:800;color:#0f172a;margin-bottom:0.25rem;">📝 Collect Environmental Data</h1>
+        <p style="color:#64748b;">Record new air quality parameters to update the central MySQL monitoring repository.</p>
+      </div>
+      <div style="display:flex;gap:0.75rem;">
+        <button id="seed-demo-btn" class="btn btn-secondary btn-sm">🌱 Seed Demo Data (25 Records)</button>
+        <button id="clear-demo-btn" class="btn btn-outline btn-sm" style="color:#ef4444;">🧹 Clear Database</button>
+      </div>
+    </div>
+
+    <!-- Container for Inline Notification Banners -->
+    <div id="alert-container"></div>
+
+    <div class="charts-grid" style="grid-template-columns: 2fr 1fr; align-items: start;">
+      
+      <!-- Main Data Entry Form -->
+      <div class="card">
+        <h2 class="card-title">Air Quality Observation Form</h2>
+        
+        <form id="collect-form" novalidate>
+          <div class="form-grid">
+            
+            <!-- Location -->
+            <div class="form-group">
+              <label for="location" class="form-label">Location / Monitoring Zone *</label>
+              <input type="text" id="location" name="location" class="form-control" placeholder="e.g. Main Road, College Campus" required>
+              <span class="form-text">Specify site or station identifier.</span>
+            </div>
+
+            <!-- Date -->
+            <div class="form-group">
+              <label for="date" class="form-label">Measurement Date *</label>
+              <input type="date" id="date" name="date" class="form-control" required>
+            </div>
+
+            <!-- Time -->
+            <div class="form-group">
+              <label for="time" class="form-label">Measurement Time</label>
+              <input type="time" id="time" name="time" class="form-control">
+            </div>
+
+            <!-- AQI Input -->
+            <div class="form-group">
+              <label for="aqi" class="form-label">Air Quality Index (AQI) *</label>
+              <input type="number" id="aqi" name="aqi" class="form-control" min="0" max="999" placeholder="e.g. 85" required>
+              <span class="form-text">Numeric AQI value (0 to 500+).</span>
+            </div>
+
+            <!-- PM2.5 -->
+            <div class="form-group">
+              <label for="pm25" class="form-label">PM2.5 (µg/m³) *</label>
+              <input type="number" id="pm25" name="pm25" class="form-control" step="0.01" min="0" placeholder="e.g. 35.5" required>
+            </div>
+
+            <!-- PM10 -->
+            <div class="form-group">
+              <label for="pm10" class="form-label">PM10 (µg/m³) *</label>
+              <input type="number" id="pm10" name="pm10" class="form-control" step="0.01" min="0" placeholder="e.g. 75.0" required>
+            </div>
+
+            <!-- Temperature -->
+            <div class="form-group">
+              <label for="temperature" class="form-label">Temperature (°C)</label>
+              <input type="number" id="temperature" name="temperature" class="form-control" step="0.1" placeholder="e.g. 28.5">
+            </div>
+
+            <!-- Humidity -->
+            <div class="form-group">
+              <label for="humidity" class="form-label">Relative Humidity (%)</label>
+              <input type="number" id="humidity" name="humidity" class="form-control" step="0.1" min="0" max="100" placeholder="e.g. 62.0">
+            </div>
+
+            <!-- Pollution Source -->
+            <div class="form-group">
+              <label for="pollution_source" class="form-label">Primary Pollution Source *</label>
+              <select id="pollution_source" name="pollution_source" class="form-control" required>
+                <option value="Vehicle Traffic">Vehicle Traffic</option>
+                <option value="Construction">Construction</option>
+                <option value="Waste Burning">Waste Burning</option>
+                <option value="Industrial Smoke">Industrial Smoke</option>
+                <option value="Dust">Dust</option>
+                <option value="Other" selected>Other</option>
+              </select>
+            </div>
+
+            <!-- Additional Notes -->
+            <div class="form-group full-width">
+              <label for="notes" class="form-label">Field Notes / Observations</label>
+              <textarea id="notes" name="notes" class="form-control" placeholder="Describe weather conditions, traffic status, or notable emission events..."></textarea>
+            </div>
+
+          </div>
+
+          <div style="margin-top:1.5rem;display:flex;gap:1rem;">
+            <button type="submit" class="btn btn-primary" style="flex:1;">📤 Submit Air Quality Measurement</button>
+            <button type="reset" class="btn btn-outline">🔄 Reset Form</button>
+          </div>
+        </form>
+
+      </div>
+
+      <!-- Real-Time Dynamic AQI Classification Preview Box -->
+      <div>
+        <div class="card" style="position:sticky;top:90px;">
+          <h3 class="card-title">🔍 Real-Time AQI Preview</h3>
+          <p style="font-size:0.85rem;color:#64748b;margin-bottom:1rem;">
+            Calculated dynamically as you type an AQI value using the <strong>US EPA Standard</strong>.
+          </p>
+
+          <div id="aqi-preview-box" style="text-align:center;padding:1.5rem;background:#f8fafc;border-radius:12px;border:1px dashed #cbd5e1;">
+            <div style="font-size:0.85rem;color:#64748b;font-weight:700;">CLASSIFICATION</div>
+            <div id="preview-badge" style="margin:0.75rem 0;">
+              <span class="aqi-badge status-good">● Good (0)</span>
+            </div>
+            <div id="preview-health-text" style="font-size:0.85rem;color:#64748b;line-height:1.4;">
+              Enter an AQI value in the form to preview health category.
+            </div>
+          </div>
+
+          <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid #e2e8f0;font-size:0.8rem;color:#64748b;">
+            <strong>Data Integrity Disclaimer:</strong><br>
+            Measurements entered here are stored in the MySQL database. Unless connected to verified hardware sensors, records represent manual/imported field observations.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-text">
+        © 2026 <strong>AirWatch Platform</strong> — Web-Based Air Quality Data Collection, Monitoring and Analysis System
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Set default date and time
+      const today = new Date().toISOString().split('T')[0];
+      const now = new Date().toTimeString().slice(0, 5);
+      document.getElementById('date').value = today;
+      document.getElementById('time').value = now;
+
+      // Real-time AQI badge preview listener
+      const aqiInput = document.getElementById('aqi');
+      aqiInput.addEventListener('input', updateAQIPreview);
+
+      function updateAQIPreview() {
+        const val = parseInt(aqiInput.value, 10);
+        const previewBadge = document.getElementById('preview-badge');
+        const previewHealth = document.getElementById('preview-health-text');
+
+        if (isNaN(val) || val < 0) {
+          previewBadge.innerHTML = '<span class="aqi-badge status-good">● Enter Value</span>';
+          previewHealth.textContent = 'Enter an AQI value to calculate classification.';
+          return;
+        }
+
+        const info = getAQIInfo(val);
+        previewBadge.innerHTML = getAQIBadgeHtml(val);
+        
+        const healthAdvisories = {
+          'Good': 'Air quality is satisfactory, and air pollution poses little or no risk.',
+          'Moderate': 'Air quality is acceptable; however, sensitive individuals may experience minor irritation.',
+          'Unhealthy for Sensitive Groups': 'Members of sensitive groups may experience health effects.',
+          'Unhealthy': 'General public may experience health effects; sensitive groups more serious effects.',
+          'Very Unhealthy': 'Health alert: The risk of health effects is increased for everyone.',
+          'Hazardous': 'Health warning of emergency conditions: everyone is affected.'
+        };
+        previewHealth.textContent = healthAdvisories[info.status] || '';
+      }
+
+      // Form Submit Handler
+      const form = document.getElementById('collect-form');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const payload = {
+          location: document.getElementById('location').value.trim(),
+          date: document.getElementById('date').value,
+          time: document.getElementById('time').value,
+          aqi: document.getElementById('aqi').value,
+          pm25: document.getElementById('pm25').value,
+          pm10: document.getElementById('pm10').value,
+          temperature: document.getElementById('temperature').value,
+          humidity: document.getElementById('humidity').value,
+          pollution_source: document.getElementById('pollution_source').value,
+          notes: document.getElementById('notes').value.trim()
+        };
+
+        if (!payload.location || !payload.date || payload.aqi === '' || payload.pm25 === '' || payload.pm10 === '') {
+          showAlert('Please fill in all required fields (Location, Date, AQI, PM2.5, PM10).', 'danger');
+          return;
+        }
+
+        try {
+          const res = await API.createRecord(payload);
+          showAlert(`✅ Air-quality record created successfully for <strong>${res.data.location}</strong> (AQI: ${res.data.aqi})!`, 'success');
+          form.reset();
+          document.getElementById('date').value = today;
+          document.getElementById('time').value = now;
+          updateAQIPreview();
+        } catch (err) {
+          showAlert('Failed to save record: ' + err.message, 'danger');
+        }
+      });
+
+      // Quick Demo Seed Listener
+      document.getElementById('seed-demo-btn').addEventListener('click', async () => {
+        try {
+          const res = await API.seedDemoData();
+          showAlert(`🌱 ${res.message}`, 'success');
+        } catch (err) {
+          showAlert('Failed to seed demo data: ' + err.message, 'danger');
+        }
+      });
+
+      // Quick Clear Listener
+      document.getElementById('clear-demo-btn').addEventListener('click', async () => {
+        if (confirm('Are you sure you want to clear all records from the database?')) {
+          try {
+            const res = await API.clearDemoData();
+            showAlert(`🧹 ${res.message}`, 'warning');
+          } catch (err) {
+            showAlert('Failed to clear database: ' + err.message, 'danger');
+          }
+        }
+      });
+
+    });
+  </script>
+</body>
+</html>
